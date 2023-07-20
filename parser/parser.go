@@ -36,18 +36,18 @@ func ParseInput(input []string) (InputOptions, error){
 	return inops, nil
 }
 
-func parseCode(input string) (string, error){
-	m, _ := regexp.MatchString("--code=", input)
+func parseCode(code string) (string, error){
+	m, _ := regexp.MatchString("--code=", code)
 	// --code=USD
-	if !m || len(input) != 10  {
+	if !m || len(code) != 10  {
 		return "", errors.New("incorrect code flag syntax")
 	}
-	code := input[7:] 
-	return code, nil
+	return code[7:], nil
 }
 
 func parseDate(date string) (string, error) {
 	m, _ := regexp.MatchString("--date=", date)
+	// --date=2022-10-08
 	if !m || len(date) != 17 {
 		return "", errors.New("incorrect date flag syntax")
 	}

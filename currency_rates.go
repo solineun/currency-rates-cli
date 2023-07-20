@@ -4,11 +4,20 @@ import (
 	"fmt"
 
 	// "github.com/golang-module/carbon"
+	"log"
+	"qiwifresh/parser"
 )
 
 
 
 func main() {
-	s := "--date=2022-10-08"
-	fmt.Println(s[7:])
+	input, err := parser.ScanInput()
+	if err != nil {
+		log.Fatal(err)
+	}
+	options, err := parser.ParseInput(input)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(options)
 }
