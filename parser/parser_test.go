@@ -2,7 +2,7 @@ package parser_test
 
 import (
 	"fmt"
-	"qiwifresh/parser"
+	"currecyrates/parser"
 	"testing"
 )
 

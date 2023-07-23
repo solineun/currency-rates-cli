@@ -1,4 +1,4 @@
-module qiwifresh
+module currecyrates
 
 go 1.18
 

@@ -5,7 +5,7 @@ import (
 
 	// "github.com/golang-module/carbon"
 	"log"
-	"qiwifresh/parser"
+	"currecyrates/parser"
 )
 
 
