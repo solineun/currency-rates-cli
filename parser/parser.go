@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 	"regexp"
-
+	"github.com/golang-module/carbon/v2"
 )
 
 type InputOptions struct {
@@ -13,8 +13,11 @@ type InputOptions struct {
 }
 
 func ScanInput() ([]string, error){
-	if len(os.Args) < 3 {
+	if len(os.Args) < 2 {
 		return nil, errors.New("not enough input parameters")
+	}
+	if len(os.Args) > 3 {
+		return nil, errors.New("too much input parameters")
 	}
 	input := os.Args[1:]
 	return input, nil
@@ -24,6 +27,12 @@ func ParseInput(input []string) (InputOptions, error){
 	c, err := parseCode(input[0])
 	if err != nil {
 		return InputOptions{}, err
+	}
+	if len(input) == 1 {
+		return InputOptions {
+			c,
+			carbon.Now().ToDateString(), 		
+		}, nil
 	}
 	d, err := parseDate(input[1])
 	if err != nil {
