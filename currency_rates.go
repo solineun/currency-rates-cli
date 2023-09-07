@@ -2,20 +2,19 @@ package main
 
 import (
 	"fmt"
-
-	// "github.com/golang-module/carbon"
 	"log"
-	"currecyrates/parser"
+	v "currecyrates/view"
+	c "currecyrates/controller"
 )
 
 
 
 func main() {
-	input, err := parser.ScanInput()
+	input, err := v.ScanInput()
 	if err != nil {
 		log.Fatal(err)
 	}
-	options, err := parser.ParseInput(input)
+	options, err := c.ParseInput(input)
 	if err != nil {
 		log.Fatal(err)
 	}
