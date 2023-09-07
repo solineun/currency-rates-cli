@@ -1,14 +1,16 @@
 package controller
 
 import (
-	"errors"
-	"regexp"
 	"github.com/golang-module/carbon/v2"
 )
-
+type Date struct {
+	Year int
+	Month int
+	Day int
+}
 type InputOptions struct {
 	Code string
-	Date string
+	Date
 }
 
 func ParseInput(input []string) (InputOptions, error){
@@ -17,10 +19,16 @@ func ParseInput(input []string) (InputOptions, error){
 		return InputOptions{}, err
 	}
 	if len(input) == 1 {
-		return InputOptions {
-			c,
-			carbon.Now().ToDateString(), 		
-		}, nil
+		today := Date {
+			Year: carbon.Now().Year(),
+			Month: carbon.Now().Month(),
+			Day: carbon.Now().Day(),
+		}
+		inops := InputOptions {
+			Code: c,
+			Date: today,
+		}
+		return inops, nil
 	}
 	d, err := parseDate(input[1])
 	if err != nil {
@@ -34,21 +42,17 @@ func ParseInput(input []string) (InputOptions, error){
 }
 
 func parseCode(code string) (string, error){
-	err := validateCode(code)
+	err := checkCode(code)
 	if err != nil {
 		return "", err
 	}
 	return code[7:], nil
 }
 
-func parseDate(date string) (string, error) {
-	m, err := regexp.MatchString("--date=", date)
+func parseDate(date string) (Date, error) {
+	err := checkDate(date)
 	if err != nil {
-		return "", err
-	}
-	// --date=2022-10-08
-	if !m || len(date) != 17 {
-		return "", errors.New("incorrect date flag syntax")
+		return Date{}, err
 	}
 	return date[7:], nil
 }
