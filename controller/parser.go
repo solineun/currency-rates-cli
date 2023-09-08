@@ -1,54 +1,71 @@
 package controller
 
 import (
-	"errors"
-	"regexp"
 	"github.com/golang-module/carbon/v2"
 )
+type Date struct {
+	Year int
+	Month int
+	Day int
+}
+
+func today() Date {
+	y, m, d := carbon.Now().Date()
+	return Date {
+		Year: y,
+		Month: m,
+		Day: d,
+	}
+}
 
 type InputOptions struct {
 	Code string
-	Date string
+	Date
 }
 
 func ParseInput(input []string) (InputOptions, error){
-	c, err := parseCode(input[0])
+	var code string
+	var date Date
+	code, err := parseCode(input[0])
 	if err != nil {
 		return InputOptions{}, err
 	}
 	if len(input) == 1 {
-		return InputOptions {
-			c,
-			carbon.Now().ToDateString(), 		
-		}, nil
+		date = today()
+	} else {
+		date, err = parseDate(input[1])
 	}
-	d, err := parseDate(input[1])
 	if err != nil {
 		return InputOptions{}, err
 	}
-	inops := InputOptions {
-		c,
-		d, 		
-	}
-	return inops, nil
+	return  InputOptions {
+		code,
+		date, 		
+	}, nil
 }
 
 func parseCode(code string) (string, error){
-	err := validateCode(code)
+	err := checkCode(code)
 	if err != nil {
 		return "", err
 	}
 	return code[7:], nil
 }
 
-func parseDate(date string) (string, error) {
-	m, err := regexp.MatchString("--date=", date)
+func parseDate(date string) (Date, error) {
+	err := checkDate(date)
 	if err != nil {
-		return "", err
+		return Date{}, err
 	}
-	// --date=2022-10-08
-	if !m || len(date) != 17 {
-		return "", errors.New("incorrect date flag syntax")
+	date = date[7:]
+	return getDateFromString(date), nil
+}
+
+func getDateFromString(str string) Date {
+	y, m, d := carbon.Parse(str).Date()
+	return Date{
+		y, 
+		m,
+		d,
 	}
-	return date[7:], nil
 }
