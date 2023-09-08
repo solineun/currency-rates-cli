@@ -5,6 +5,14 @@ import (
 	"regexp"
 )
 
+func matchFlagPattern(flag, pattern string) (bool, error) {
+	m, err := regexp.MatchString(pattern, flag)
+	if err != nil {
+		return m, err
+	}
+	return m, nil
+}
+
 func checkCode(code string) error {
 	var pattern = `(?:\s|^)(?P<primary>--code[=]\S+)(?:\s|$)`
 	m, err := matchFlagPattern(code, pattern)
@@ -21,7 +29,7 @@ func checkCode(code string) error {
 }
 
 func checkDate(date string) error {
-	var pattern =  `(?:\s|^)(?P<primary>--date[=]\S+)(?:\s|$)`
+	var pattern =  `(?:\s|^)(?P<primary>--date[=])(\d{4}-\d{2}-\d{2})(?:\s|$)`
 	m, err := matchFlagPattern(date, pattern)
 	if err != nil {
 		return err
@@ -33,12 +41,4 @@ func checkDate(date string) error {
 		return errors.New("incorrect currency date")
 	}
 	return nil
-}
-
-func matchFlagPattern(flag, pattern string) (bool, error) {
-	m, err := regexp.MatchString(pattern, flag)
-	if err != nil {
-		return m, err
-	}
-	return m, nil
 }

@@ -8,37 +8,40 @@ type Date struct {
 	Month int
 	Day int
 }
+
+func today() Date {
+	y, m, d := carbon.Now().Date()
+	return Date {
+		Year: y,
+		Month: m,
+		Day: d,
+	}
+}
+
 type InputOptions struct {
 	Code string
 	Date
 }
 
 func ParseInput(input []string) (InputOptions, error){
-	c, err := parseCode(input[0])
+	var code string
+	var date Date
+	code, err := parseCode(input[0])
 	if err != nil {
 		return InputOptions{}, err
 	}
 	if len(input) == 1 {
-		today := Date {
-			Year: carbon.Now().Year(),
-			Month: carbon.Now().Month(),
-			Day: carbon.Now().Day(),
-		}
-		inops := InputOptions {
-			Code: c,
-			Date: today,
-		}
-		return inops, nil
+		date = today()
+	} else {
+		date, err = parseDate(input[1])
 	}
-	d, err := parseDate(input[1])
 	if err != nil {
 		return InputOptions{}, err
 	}
-	inops := InputOptions {
-		c,
-		d, 		
-	}
-	return inops, nil
+	return  InputOptions {
+		code,
+		date, 		
+	}, nil
 }
 
 func parseCode(code string) (string, error){
@@ -54,5 +57,15 @@ func parseDate(date string) (Date, error) {
 	if err != nil {
 		return Date{}, err
 	}
-	return date[7:], nil
+	date = date[7:]
+	return getDateFromString(date), nil
+}
+
+func getDateFromString(str string) Date {
+	y, m, d := carbon.Parse(str).Date()
+	return Date{
+		y, 
+		m,
+		d,
+	}
 }
