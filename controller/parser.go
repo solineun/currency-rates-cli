@@ -2,33 +2,27 @@ package controller
 
 import (
 	"github.com/golang-module/carbon/v2"
+	"currencyrates/model"
 )
-type Date struct {
-	Year int
-	Month int
-	Day int
-}
 
-func today() Date {
+type InputOptions model.InputOptions
+type Date model.Date
+
+func today() model.Date {
 	y, m, d := carbon.Now().Date()
-	return Date {
+	return model.Date {
 		Year: y,
 		Month: m,
 		Day: d,
 	}
 }
 
-type InputOptions struct {
-	Code string
-	Date
-}
-
-func ParseInput(input []string) (InputOptions, error){
+func ParseInput(input []string) (model.InputOptions, error){
 	var code string
-	var date Date
+	var date model.Date
 	code, err := parseCode(input[0])
 	if err != nil {
-		return InputOptions{}, err
+		return model.InputOptions{}, err
 	}
 	if len(input) == 1 {
 		date = today()
@@ -36,11 +30,11 @@ func ParseInput(input []string) (InputOptions, error){
 		date, err = parseDate(input[1])
 	}
 	if err != nil {
-		return InputOptions{}, err
+		return model.InputOptions{}, err
 	}
-	return  InputOptions {
-		code,
-		date, 		
+	return  model.InputOptions {
+		Code: code,
+		Date: model.Date(date), 		
 	}, nil
 }
 
@@ -52,20 +46,20 @@ func parseCode(code string) (string, error){
 	return code[7:], nil
 }
 
-func parseDate(date string) (Date, error) {
+func parseDate(date string) (model.Date, error) {
 	err := checkDate(date)
 	if err != nil {
-		return Date{}, err
+		return model.Date{}, err
 	}
 	date = date[7:]
 	return getDateFromString(date), nil
 }
 
-func getDateFromString(str string) Date {
+func getDateFromString(str string) model.Date {
 	y, m, d := carbon.Parse(str).Date()
-	return Date{
-		y, 
-		m,
-		d,
+	return model.Date{
+		Year: y, 
+		Month: m,
+		Day: d,
 	}
 }

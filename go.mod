@@ -1,4 +1,4 @@
-module currecyrates
+module currencyrates
 
 go 1.18
 
