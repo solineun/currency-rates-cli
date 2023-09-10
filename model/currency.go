@@ -1,5 +1,7 @@
 package model
 
+import "encoding/xml"
+
 type Date struct {
 	Year int
 	Month int
@@ -11,15 +13,24 @@ type InputOptions struct {
 	Date
 }
 
-type Currency struct {
+type CurrencyRates struct {
 	
 }
 
-func GetCurrency(options InputOptions) (Currency, error) {
-	
-	return Currency{}, nil
+func GetCurrencyRates(options InputOptions) (CurrencyRates, error) {
+	ratesXml, err := getXml(options.Date)
+	if err != nil {
+		return CurrencyRates{}, err
+	}
+	cr, err := getRatesFromXml(ratesXml)
+	if err != nil{
+		return CurrencyRates{}, err
+	}
+	return cr, nil
 }
 
-func getCurrencyFromXml() {
-
+func getRatesFromXml(ratesXml []byte) (CurrencyRates, error){
+	cr := new(CurrencyRates)
+	err := xml.Unmarshal(ratesXml, cr)
+	return *cr, err
 }

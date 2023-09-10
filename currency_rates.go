@@ -19,6 +19,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	currency, err := m.GetCurrency(options)
-	fmt.Println(currency)
+	currRates, err := m.GetCurrencyRates(options)
+	fmt.Println(currRates)
 }
