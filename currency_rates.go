@@ -3,11 +3,10 @@ package main
 import (
 	"fmt"
 	"log"
-	v "currecyrates/view"
-	c "currecyrates/controller"
+	v "currencyrates/view"
+	c "currencyrates/controller"
+	m "currencyrates/model"
 )
-
-
 
 func main() {
 	input, err := v.ScanInput()
@@ -18,5 +17,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(options)
+	currency, err := m.GetCurrency(options)
+	fmt.Println(currency)
 }
