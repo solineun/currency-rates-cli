@@ -8,8 +8,6 @@ import (
 	m "currencyrates/model"
 )
 
-
-
 func main() {
 	input, err := v.ScanInput()
 	if err != nil {
@@ -19,6 +17,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	currRates, err := m.GetCurrencyRates(options)
-	fmt.Println(currRates)
+	currency, err := m.GetCurrency(options)
+	fmt.Println(currency)
 }
