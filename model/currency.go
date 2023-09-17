@@ -5,17 +5,6 @@ import (
 	"errors"
 )
 
-type Date struct {
-	Year int
-	Month int
-	Day int
-}
-
-type InputOptions struct {
-	Code string
-	Date
-}
-
 type CurrencyRates struct {
 	Currencies []Currency `xml:"Valute"`
 }

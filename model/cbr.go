@@ -1,7 +1,6 @@
 package model
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -16,7 +15,7 @@ func getXml(d Date) ([]byte, error) {
 }
 
 func concatUrlWithDate(d Date) string {
-	return url + fmt.Sprintf("%d/%d/%d", d.Day, d.Month, d.Year)
+	return url + d.cbrString()
 }
 
 func makeRequest(url string) ([]byte, error) {
