@@ -36,6 +36,11 @@ func TestConcatUrlWithDate(t *testing.T) {
 			Date{2022, 8, 6}, 
 			"https://www.cbr.ru/scripts/XML_daily.asp?date_req=06/08/2022",
 		},
+		{
+			Date{2002, 1, 7}, 
+			"https://www.cbr.ru/scripts/XML_daily.asp?date_req=07/01/2002",
+		},
+
 	}
 	for _, tt := range tests {
 		t.Run(fmt.Sprint(tt.Date), func(t *testing.T) {
