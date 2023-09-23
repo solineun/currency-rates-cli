@@ -1,11 +1,12 @@
 package model
 
 import (
-	"fmt"
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+
 	"github.com/golang-module/carbon/v2"
 )
 
@@ -32,21 +33,24 @@ func makeRequest(cbrUrl string) ([]byte, error) {
 		"GET", cbrUrl, nil,
 	)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	}
 
 	urlObj, _ := url.Parse(cbrUrl)
-	client.Jar.SetCookies(urlObj, getCookies())
+	cooks := getCookies()
+	client.Jar.SetCookies(urlObj, cooks)
 
 	addHeaders(req)
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return []byte{}, err
+		return nil, err
 	} 
 	defer resp.Body.Close()
-	fmt.Println(req.Header)
-	fmt.Printf("StatusCode: %d\n", resp.StatusCode)
+	
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New(resp.Status) 
+	}
 	
 	respBody, err := ioutil.ReadAll(resp.Body)
 	return respBody, err

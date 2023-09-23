@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	v "currencyrates/view"
 	c "currencyrates/controller"
@@ -18,5 +17,8 @@ func main() {
 		log.Fatal(err)
 	}
 	currency, err := m.GetCurrency(options)
-	fmt.Println(currency)
+	if err != nil {
+		log.Fatal(err)
+	}
+	v.PrintResult(currency)
 }

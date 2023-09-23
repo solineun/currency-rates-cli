@@ -1,7 +1,9 @@
 package view
 
 import (
+	"currencyrates/model"
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -16,6 +18,6 @@ func ScanInput() ([]string, error){
 	return input, nil
 }
 
-func PrintResult([]string) {
-
+func PrintResult(c model.Currency) {
+	fmt.Printf("%s (%d %s): %s\n", c.CharCode, c.Nominal, c.Name, c.Value)
 }
